@@ -18,6 +18,10 @@ import { deleteMyBlog } from "@/services/blog";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createVote, undoVote } from "@/services/vote";
+import { PaymentModal } from "./PaymentModal";
+import { useEffect, useState } from "react";
+import { getSingleOrder } from "@/services/payment";
+import { TOrder } from "@/types";
 
 const getStatusColor = (status: string) => {
   switch (status) {
@@ -43,6 +47,7 @@ const IdeaDetailsCard = ({
   user: TAuthor;
   refresh: () => void;
 }) => {
+  const [currentOrder, setCurrentOrder] = useState<TOrder>();
   const router = useRouter();
   const isUpvoted = idea.up_votes > 0;
   const isDownvoted = idea.down_votes > 0;
@@ -90,6 +95,20 @@ const IdeaDetailsCard = ({
     });
   };
 
+  useEffect(() => {
+    const findIdea = async () => {};
+    findIdea();
+  }, []);
+  useEffect(() => {
+    const getPayment = async () => {
+      const res = await getSingleOrder(idea?.id);
+      if (res?.success) {
+        setCurrentOrder(res?.data);
+      }
+    };
+    getPayment();
+  }, [idea?.id]);
+  console.log(currentOrder, "kjbkb");
   if (!idea) {
     return (
       <div className="text-center py-10 text-muted-foreground">Loading...</div>
@@ -97,7 +116,7 @@ const IdeaDetailsCard = ({
   }
 
   return (
-    <div className="max-w-5xl mx-auto min-h-[calc(100vh-100px)] p-4 my-4 shadow-lg bg-amber-50 border-amber-500 border rounded-md">
+    <div className="max-w-5xl mx-auto min-h-[calc(100vh-100px)] p-4 my-4 shadow-lg bg-amber-50  border rounded-md">
       {/* Images */}
       {idea.images?.length > 0 && (
         <Swiper
@@ -144,12 +163,15 @@ const IdeaDetailsCard = ({
             {idea.isPremium ? `Premium - $${idea.price}` : "Free"}
           </div>
 
-          {idea.isPremium && (
-            <button
-              className="bg-green-600 hover:bg-green-700 text-sm cursor-pointer text-white font-medium px-2 py-2 rounded-lg transition"
-              onClick={() => alert("Redirecting to payment...")}>
-              Pay ${idea.price}
+          {currentOrder?.status === "paid" ? (
+            <button className="bg-gray-600 text-sm text-white font-medium px-2 py-2 rounded-lg transition">
+              Paid ৳{idea.price}
             </button>
+          ) : (
+            idea.isPremium &&
+            idea?.authorId !== user?.id && (
+              <PaymentModal idea={idea} user={user} />
+            )
           )}
         </div>
       </div>

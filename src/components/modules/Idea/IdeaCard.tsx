@@ -13,19 +13,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Edit, Eye, Trash2 } from "lucide-react";
-import { deleteMyBlog } from "@/services/blog";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import { TIdea } from "@/types/idea.types";
+import { deleteMyIdea } from "@/services/idea";
 
 interface IIdeaCard {
   data: TIdea;
   userId: string | undefined;
-  refresh: () => void;
 }
 
-const IdeaCard = ({ data, refresh, userId }: IIdeaCard) => {
+const IdeaCard = ({ data, userId }: IIdeaCard) => {
   const timeAgo = formatDistanceToNow(new Date(data.createdAt), {
     addSuffix: true,
   });
@@ -45,7 +44,7 @@ const IdeaCard = ({ data, refresh, userId }: IIdeaCard) => {
         if (isDisLiked) {
           setIsDisLiked(false);
         }
-        refresh();
+
       }
     } catch (error) {
       console.log(error);
@@ -58,7 +57,6 @@ const IdeaCard = ({ data, refresh, userId }: IIdeaCard) => {
     try {
       const res = await undoVote(voteData);
       if (res.success) {
-        refresh();
         if (isLiked) {
           setIsLiked(false);
         } else {
@@ -76,7 +74,7 @@ const IdeaCard = ({ data, refresh, userId }: IIdeaCard) => {
   const removeDisLike = async () => {
     removeVote();
   };
-  const deleteBlog = async (id: string) => {
+  const deleteIdea = async (id: string) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -88,17 +86,16 @@ const IdeaCard = ({ data, refresh, userId }: IIdeaCard) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await deleteMyBlog(id);
+          const res = await deleteMyIdea(id);
           console.log(res);
           if (res.success) {
-            refresh();
           }
         } catch (error) {
           console.log(error);
         }
         Swal.fire({
           title: "Deleted!",
-          text: "Your file has been deleted.",
+          text: "Your Idea has been deleted.",
           icon: "success",
         });
       }
@@ -111,7 +108,7 @@ const IdeaCard = ({ data, refresh, userId }: IIdeaCard) => {
         <div className="flex  relative">
           <Image
             className="w-[410px] h-[250px] rounded-t-md"
-            src={data.images[0]}
+            src={data.images[0] || "https://i.ibb.co.com/7d4G55NY/house-4811590-1280.jpg"}
             alt="image"
             height={200}
             width={300}
@@ -151,7 +148,7 @@ const IdeaCard = ({ data, refresh, userId }: IIdeaCard) => {
                           </li>
                         </Link>
                         <li
-                          onClick={() => deleteBlog(data.id)}
+                          onClick={() => deleteIdea(data.id)}
                           className="cursor-pointer flex gap-1 hover:bg-red-500 hover:text-white px-1 border-t border-amber-500 text-red-500 pt-0.5">
                           <Trash2 className="relative top-1" size={17} /> Delete
                         </li>
