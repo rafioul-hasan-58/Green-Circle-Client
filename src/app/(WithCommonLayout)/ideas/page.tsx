@@ -8,17 +8,22 @@ import { TIdea } from "@/types/idea.types";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/components/ui/pagination";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 
 const tabOrder = ["all", "energy", "waste", "transportation"];
 
 const IdeaPage = () => {
   interface TMeta {
-    page: number,
-    limit: number,
-    total: number,
-    totalPage: number
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
   }
   const [ideas, setIdeas] = useState<TIdea[]>([]);
   const [selectedTab, setSelectedTab] = useState<string>("all");
@@ -31,20 +36,19 @@ const IdeaPage = () => {
       searchTerm: searchTerm,
       page: currentPage.toString(),
       status: "approved",
-      limit:"8"
+      limit: "8",
     });
     if (res.success) {
       setIdeas(res.data);
-      setMeta(res.meta)
+      setMeta(res.meta);
     }
-  }, [selectedTab, searchTerm, currentPage])
+  }, [selectedTab, searchTerm, currentPage]);
   useEffect(() => {
-    fetchIdeas()
+    fetchIdeas();
   }, [searchTerm, selectedTab, currentPage, fetchIdeas]);
 
   const { user } = useUser();
   return (
-
     <div className="lg:mx-8 my-6">
       <div className="lg:flex lg:flex-row-reverse gap-3 lg:mx-4 mx-1">
         <div className="flex flex-1 lg:mb-0 mb-1 lg:mx-0 mx-0.5">
@@ -56,8 +60,7 @@ const IdeaPage = () => {
           />
           <Button
             className="rounded-l-none rounded-r-full cursor-pointer bg-green-500"
-            size="icon"
-          >
+            size="icon">
             <Search size={18} />
           </Button>
         </div>
@@ -96,21 +99,39 @@ const IdeaPage = () => {
         <Pagination>
           <PaginationContent>
             <PaginationItem>
-              <Button disabled={currentPage === 1} className="text-amber-500 bg-white border border-amber-500" onClick={() => setCurrentPage(currentPage - 1)}><BiLeftArrow />Previous</Button>
+              <Button
+                disabled={currentPage === 1}
+                className="text-amber-500 bg-white border border-amber-500"
+                onClick={() => setCurrentPage(currentPage - 1)}>
+                <BiLeftArrow />
+                Previous
+              </Button>
             </PaginationItem>
             <PaginationItem className="flex gap-2">
               {[...Array(Math.max(1, meta?.totalPage || 1))].map((_, index) => (
                 <PaginationItem key={index}>
-                  <PaginationLink onClick={() => setCurrentPage(index + 1)} className={`border text-green-500 border-green-500 hover:bg-amber-500 hover:border-amber-500 hover:text-white ${index === (Number(meta?.page) - 1) ? "bg-green-500 text-white" : ""}`}>{index + 1}</PaginationLink>
+                  <PaginationLink
+                    onClick={() => setCurrentPage(index + 1)}
+                    className={`border text-green-500 border-green-500 hover:bg-amber-500 hover:border-amber-500 hover:text-white ${
+                      index === Number(meta?.page) - 1
+                        ? "bg-green-500 text-white"
+                        : ""
+                    }`}>
+                    {index + 1}
+                  </PaginationLink>
                 </PaginationItem>
               ))}
             </PaginationItem>
             <PaginationItem>
-              <Button disabled={currentPage === meta?.totalPage} className="bg-amber-500 text-white" onClick={() => setCurrentPage(currentPage + 1)}>Next <BiRightArrow /></Button>
+              <Button
+                disabled={currentPage === meta?.totalPage}
+                className="bg-amber-500 text-white"
+                onClick={() => setCurrentPage(currentPage + 1)}>
+                Next <BiRightArrow />
+              </Button>
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-
       </div>
     </div>
   );
