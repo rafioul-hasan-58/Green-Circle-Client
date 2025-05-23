@@ -54,12 +54,12 @@ const IdeaPage = () => {
         <div className="flex flex-1 lg:mb-0 mb-1 lg:mx-0 mx-0.5">
           <Input
             placeholder="Search Idea..."
-            className="lg:w-full border-green-500 rounded-r-none focus:border-green-500"
+            className="lg:w-full border-sky-500 rounded-r-none focus:border-sky-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Button
-            className="rounded-l-none rounded-r-full cursor-pointer bg-green-500"
+            className="rounded-l-none rounded-r-full cursor-pointer bg-sky-500"
             size="icon">
             <Search size={18} />
           </Button>
@@ -76,7 +76,7 @@ const IdeaPage = () => {
                 <TabsTrigger
                   key={tab}
                   value={tab}
-                  className="w-full data-[state=active]:bg-green-500 data-[state=active]:text-white">
+                  className="w-full data-[state=active]:bg-sky-500 data-[state=active]:text-white">
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </TabsTrigger>
               ))}
@@ -101,7 +101,7 @@ const IdeaPage = () => {
             <PaginationItem>
               <Button
                 disabled={currentPage === 1}
-                className="text-amber-500 bg-white border border-amber-500"
+                className="text-sky-500 bg-white border border-sky-500"
                 onClick={() => setCurrentPage(currentPage - 1)}>
                 <BiLeftArrow />
                 Previous
@@ -112,9 +112,9 @@ const IdeaPage = () => {
                 <PaginationItem key={index}>
                   <PaginationLink
                     onClick={() => setCurrentPage(index + 1)}
-                    className={`border text-green-500 border-green-500 hover:bg-amber-500 hover:border-amber-500 hover:text-white ${
+                    className={`border text-sky-500 border-sky-500 hover:bg-green-500 hover:border-green-500 hover:text-white ${
                       index === Number(meta?.page) - 1
-                        ? "bg-green-500 text-white"
+                        ? "bg-sky-500 text-white"
                         : ""
                     }`}>
                     {index + 1}
@@ -125,7 +125,7 @@ const IdeaPage = () => {
             <PaginationItem>
               <Button
                 disabled={currentPage === meta?.totalPage}
-                className="bg-amber-500 text-white"
+                className="bg-sky-500 text-white"
                 onClick={() => setCurrentPage(currentPage + 1)}>
                 Next <BiRightArrow />
               </Button>
