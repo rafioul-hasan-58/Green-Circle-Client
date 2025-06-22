@@ -49,8 +49,8 @@ const UpdateIdea = () => {
     const { watch, setValue, formState: { isSubmitting } } = form;
 
     const goToNext = () => {
-        const currentIndex = tabOrder.indexOf(activeTab);
-        if (currentIndex < tabOrder.length - 1) {
+        const currentIndex = tabOrder?.indexOf(activeTab);
+        if (currentIndex < tabOrder?.length - 1) {
             setActiveTab(tabOrder[currentIndex + 1]);
         }
     };
@@ -110,6 +110,7 @@ const UpdateIdea = () => {
             if (res.success) {
                 form.reset();
                 toast.success(res.message)
+                window.location.href="/member/dashboard/my-ideas"
             }
         } catch (error) {
             console.log(error)

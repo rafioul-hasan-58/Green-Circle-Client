@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getSingleUSer } from "@/services/user";
+import { getSingleUser } from "@/services/user";
 import { IUser, TOrder } from "@/types";
 import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -24,7 +24,7 @@ const OrderPageDetails = ({
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     const getUser = async () => {
-      const res = await getSingleUSer(user?.userId);
+      const res = await getSingleUser(user?.userId);
 
       setCurrentUser(res?.data);
     };
@@ -46,7 +46,7 @@ const OrderPageDetails = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order) => (
+          {orders?.map((order) => (
             <TableRow key={order.id}>
               <TableCell>{order.ideaTitle}</TableCell>
               <TableCell>{order.id}</TableCell>

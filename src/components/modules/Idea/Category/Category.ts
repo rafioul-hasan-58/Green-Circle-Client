@@ -5,10 +5,8 @@ export const categoryOptions = [
 ];
 
 export const statusOptions = [
-    { label: "Pending", value: "pending" },
+    { label: "Under Review", value: "underReview" },
     { label: "Draft", value: "draft" },
-    { label: "Published", value: "published" },
-    { label: "Unpublished", value: "unpublished" }
 ];
 export const priceOptions = [
     { label: "Paid", value: "paid" },

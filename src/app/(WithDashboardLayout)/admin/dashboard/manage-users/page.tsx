@@ -1,10 +1,12 @@
+import AllUserPage from "@/components/modules/Dashboard/Admin/User/AllUserPage";
 
-const ManageUsers = () => {
-    return (
-        <div>
-            <h1>This is ManageUsers</h1>
-        </div>
-    );
+const ManageUsers = async () => {
+
+  return (
+    <div>
+      <AllUserPage />
+    </div>
+  );
 };
 
 export default ManageUsers;
