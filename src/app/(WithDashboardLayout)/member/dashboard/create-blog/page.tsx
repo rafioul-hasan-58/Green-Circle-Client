@@ -53,22 +53,23 @@ const CreateBlog = () => {
       images,
       status,
     };
-    console.log(blogData);
     try {
       const res = await createBlog(blogData);
-      if (res.success) {
+      if (res?.success) {
         setImageUrls([]);
         setPreviewImages([]);
         form.reset();
         window.location.reload();
-        toast.success(res.message);
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
       }
     } catch (error) {
       console.log(error);
     }
-  }; // Closing the onSubmit function
+  };
   return (
-    <div className=" lg:max-w-5xl lg:mx-auto  my-5 ">
+    <div className="max-w-5xl lg:container mx-auto  my-5 ">
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" flex items-center justify-between">
